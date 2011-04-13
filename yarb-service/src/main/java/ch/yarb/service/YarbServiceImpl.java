@@ -1,7 +1,7 @@
 package ch.yarb.service;
 
 /**
- * Yarb service implementation
+ * Yarb service implementation.
  * 
  * @author pellaton
  */

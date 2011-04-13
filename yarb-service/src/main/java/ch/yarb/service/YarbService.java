@@ -12,5 +12,5 @@ public interface YarbService {
    * 
    * @return a ping message
    */
-  public String ping();
+  String ping();
 }
