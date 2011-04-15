@@ -1,5 +1,6 @@
 package ch.yarb.service.impl;
 
+import java.io.File;
 import java.util.List;
 
 import org.junit.Test;
@@ -64,7 +65,7 @@ public class YarbServiceImplTest {
   @Test
   public void getRepositoryLogRevision() {
     List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
-        "file:///Users/michael/.gitrepositories/yarb/yarb-service/src/test/resources/svntestrepo/",
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
         "anonymous", "anonymous"),
         RevisionRange.ALL);
     assertNotNull(repositoryLog);
