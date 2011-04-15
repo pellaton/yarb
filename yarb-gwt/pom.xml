@@ -62,7 +62,7 @@
           </execution>
         </executions>
         <configuration>
-          <runTarget>ch.yarb.gwt.Application/Application.html</runTarget>
+          <runTarget>ch.yarb.gwt.Yarb/Yarb.html</runTarget>
         </configuration>
       </plugin>
       <!--
