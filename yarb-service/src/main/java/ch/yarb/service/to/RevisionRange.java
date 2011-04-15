@@ -4,7 +4,7 @@ package ch.yarb.service.to;
 public class RevisionRange {
 
   public static final Long LOWER_MIN = 0L;
-  public static final Long UPPER_MAX = Long.MAX_VALUE;
+  public static final Long UPPER_MAX = -1L;
   public static final RevisionRange ALL = new RevisionRange(LOWER_MIN, UPPER_MAX);
 
   private final Long lowerBound;
