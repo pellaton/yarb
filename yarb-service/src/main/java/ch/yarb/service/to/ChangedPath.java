@@ -1,11 +1,13 @@
 package ch.yarb.service.to;
 
+import java.io.Serializable;
+
 /**
  * Object representing a single changed path in the repository.
  *
  * @author pellaton
  */
-public class ChangedPath {
+public class ChangedPath implements Serializable {
 
   private final String path;
   private final ChangeType changeType;

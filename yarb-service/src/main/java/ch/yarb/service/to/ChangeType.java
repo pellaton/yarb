@@ -1,5 +1,6 @@
 package ch.yarb.service.to;
 
+
 /**
  * Enumeration representing the type of change of a path in the repository.
  *

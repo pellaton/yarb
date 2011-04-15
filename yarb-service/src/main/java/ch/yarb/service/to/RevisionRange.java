@@ -1,11 +1,13 @@
 package ch.yarb.service.to;
 
+import java.io.Serializable;
+
 /**
  * Object representing a revision range.
  *
  * @author pellaton
  */
-public class RevisionRange {
+public class RevisionRange implements Serializable {
 
   /** The lowest minimal version number. */
   public static final Long LOWER_MIN = 0L;

@@ -1,11 +1,13 @@
 package ch.yarb.service.to;
 
+import java.io.Serializable;
+
 /**
  * Object representing a repository configuration.
  *
  * @author pellaton
  */
-public class RepoConfiguration {
+public class RepoConfiguration implements Serializable {
 
   private final String repoUrl;
   private final String userName;
