@@ -62,9 +62,9 @@ public class YarbServiceImpl implements YarbService {
           repoConfiguration.getUserName(), repoConfiguration.getPassword());
       repository.setAuthenticationManager(authManager);
 
-      Collection logEntries = repository.log(new String[]{""}, null, revisionRange.getLowerBound(),
+      Collection<?> logEntries = repository.log(new String[]{""}, null, revisionRange.getLowerBound(),
           revisionRange.getUpperBound(), true, true);
-      for (Iterator entries = logEntries.iterator(); entries.hasNext();) {
+      for (Iterator<?> entries = logEntries.iterator(); entries.hasNext();) {
         SVNLogEntry logEntry = (SVNLogEntry) entries.next();
         logEntryList.add(new LogEntry(
             Long.toString(logEntry.getRevision()), new DateTime(logEntry.getDate().getTime()), logEntry.getAuthor(),
@@ -77,9 +77,9 @@ public class YarbServiceImpl implements YarbService {
     return logEntryList;
   }
 
-  private List<ChangedPath> getChangedPathsList(Map map) {
-    List<ChangedPath> changedPathList = new ArrayList<ChangedPath>() {};
-    for (Object path : new TreeSet(map.keySet())) {
+  private List<ChangedPath> getChangedPathsList(Map<?, ?> map) {
+    List<ChangedPath> changedPathList = new ArrayList<ChangedPath>();
+    for (Object path : new TreeSet<Object>(map.keySet())) {
       SVNLogEntryPath changedPath = (SVNLogEntryPath) map.get(path);
       changedPathList.add(new ChangedPath(changedPath.getPath(), decodeChangeType(changedPath.getType())));
     }
