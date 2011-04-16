@@ -74,7 +74,7 @@
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-dev</artifactId>
       <version>${gwt.version}</version>
-      <scope>test</scope>
+      <scope>provided</scope>
     </dependency>    
     <dependency>
       <groupId>com.google.gwt</groupId>
