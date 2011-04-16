@@ -17,7 +17,7 @@ public class RepoConfiguration implements Serializable {
   /**
    * Constructor.
    *
-   * @param repoUrl the repository URL
+   * @param repoUrl the repository URL / path
    * @param userName the user name
    * @param password the password
    */
