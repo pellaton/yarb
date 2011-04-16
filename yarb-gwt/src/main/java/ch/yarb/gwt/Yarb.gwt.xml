@@ -6,6 +6,10 @@
 
       <!--  inherit css based theme -->
       <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+      
+      <inherits name="ch.yarb.api.YarbTo"/>
+      
+      <source path="client"/>
 
       <!-- Specify the app entry point class.                         -->
       <entry-point class='ch.yarb.gwt.client.Yarb'/>
