@@ -2,3 +2,4 @@
 appContext-yarb.xml
 log4j.properties
 /classes
+/lib

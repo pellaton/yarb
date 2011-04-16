@@ -7,6 +7,9 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/yarb-service/yarb-service">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/yarb-api/yarb-api">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="yarb-gwt"/>
         <property name="java-output-path" value="/yarb-gwt/war/WEB-INF/classes"/>
     </wb-module>
