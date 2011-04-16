@@ -9,8 +9,8 @@ import java.io.Serializable;
  */
 public class ChangedPath implements Serializable {
 
-  private final String path;
-  private final ChangeType changeType;
+  private String path;
+  private ChangeType changeType;
 
 
   /**
@@ -22,6 +22,29 @@ public class ChangedPath implements Serializable {
    */
   public ChangedPath(String path, ChangeType changeType) {
     this.path = path;
+    this.changeType = changeType;
+  }
+
+  /**
+   * default contstructor for GWT.
+   */
+  public ChangedPath() {
+
+  }
+
+
+  /**
+   * @param path the path to set
+   */
+  public void setPath(String path) {
+    this.path = path;
+  }
+
+
+  /**
+   * @param changeType the changeType to set
+   */
+  public void setChangeType(ChangeType changeType) {
     this.changeType = changeType;
   }
 

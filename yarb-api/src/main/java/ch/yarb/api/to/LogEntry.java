@@ -11,11 +11,11 @@ import java.util.List;
  */
 public class LogEntry implements Serializable {
 
-  private final String revision;
-  private final Date timestamp;
-  private final String author;
-  private final String comment;
-  private final List<ChangedPath> changedPathList;
+  private String revision;
+  private Date timestamp;
+  private String author;
+  private String comment;
+  private List<ChangedPath> changedPathList;
 
   /**
    * Constructor.
@@ -26,7 +26,10 @@ public class LogEntry implements Serializable {
    * @param comment the comment
    * @param changedPathList the list of changed paths
    */
-  public LogEntry(String revision, Date timestamp, String author, String comment,
+  public LogEntry(String revision,
+      Date timestamp,
+      String author,
+      String comment,
       List<ChangedPath> changedPathList) {
     this.revision = revision;
     this.timestamp = new Date(timestamp.getTime());
@@ -35,6 +38,39 @@ public class LogEntry implements Serializable {
     this.changedPathList = changedPathList;
   }
 
+  /**
+   *  Default constructor for GWT.
+   */
+  public LogEntry() {
+
+  }
+
+  /**
+   * Gets the author.
+   *
+   * @return the author
+   */
+  public String getAuthor() {
+    return this.author;
+  }
+
+  /**
+   * Gets the list of changed paths.
+   *
+   * @return the list of changed paths
+   */
+  public List<ChangedPath> getChangedPathList() {
+    return this.changedPathList;
+  }
+
+  /**
+   * Gets the comment.
+   *
+   * @return the comment
+   */
+  public String getComment() {
+    return this.comment;
+  }
 
   /**
    * Gets the revision identifier.
@@ -54,31 +90,40 @@ public class LogEntry implements Serializable {
     return this.timestamp;
   }
 
+
   /**
-   * Gets the author.
-   *
-   * @return the author
+   * @param author the author to set
    */
-  public String getAuthor() {
-    return this.author;
+  public void setAuthor(String author) {
+    this.author = author;
   }
 
   /**
-   * Gets the comment.
-   *
-   * @return the comment
+   * @param changedPathList the changedPathList to set
    */
-  public String getComment() {
-    return this.comment;
+  public void setChangedPathList(List<ChangedPath> changedPathList) {
+    this.changedPathList = changedPathList;
   }
 
   /**
-   * Gets the list of changed paths.
-   *
-   * @return the list of changed paths
+   * @param comment the comment to set
    */
-  public List<ChangedPath> getChangedPathList() {
-    return this.changedPathList;
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
+  /**
+   * @param revision the revision to set
+   */
+  public void setRevision(String revision) {
+    this.revision = revision;
+  }
+
+  /**
+   * @param timestamp the timestamp to set
+   */
+  public void setTimestamp(Date timestamp) {
+    this.timestamp = timestamp;
   }
 
 }
