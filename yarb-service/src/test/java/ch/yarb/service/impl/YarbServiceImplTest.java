@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.yarb.service.api.YarbService;
-import ch.yarb.service.to.ChangeType;
-import ch.yarb.service.to.ChangedPath;
-import ch.yarb.service.to.LogEntry;
-import ch.yarb.service.to.RepoConfiguration;
-import ch.yarb.service.to.RevisionRange;
+import ch.yarb.api.service.YarbService;
+import ch.yarb.api.to.ChangeType;
+import ch.yarb.api.to.ChangedPath;
+import ch.yarb.api.to.LogEntry;
+import ch.yarb.api.to.RepoConfiguration;
+import ch.yarb.api.to.RevisionRange;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -135,5 +135,19 @@ public class YarbServiceImplTest {
     assertNotNull("changed path", changedPath);
     assertEquals("changed path", "/trunk/module1/file1.txt", changedPath.getPath());
     assertEquals("change type", ChangeType.MODIFIED, changedPath.getChangeType());
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for an external repo.
+   */
+  @Test
+  public void getRepositoryLogRevisionExternal() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "http://eclipse-cheatsheet.googlecode.com/svn/trunk/",
+        "anonymous", "anonymous"),
+        RevisionRange.ALL);
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    assertTrue(repositoryLog.size() >= 4);
   }
 }
