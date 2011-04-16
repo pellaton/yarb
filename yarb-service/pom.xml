@@ -76,11 +76,11 @@
       <type>jar</type>
     </dependency>
     <dependency>
-    	<groupId>ch.yarb</groupId>
-    	<artifactId>api</artifactId>
-    	<version>0.0.1-SNAPSHOT</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
+      <groupId>ch.yarb</groupId>
+      <artifactId>yarb-api</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <type>jar</type>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   
