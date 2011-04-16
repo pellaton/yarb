@@ -17,6 +17,8 @@
       <!--  tell the compiler we can use 1.5 -->
       <maven.compiler.source>1.6</maven.compiler.source>
       <maven.compiler.target>1.6</maven.compiler.target>
+      
+      <spring.version>3.0.4.RELEASE</spring.version>
 
   </properties>
 
@@ -30,7 +32,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>3.0.4.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>    
 
     <!--  GWT dependencies (from central repo) -->
@@ -99,6 +101,48 @@
             <target>${maven.compiler.target}</target>
           </configuration>
       </plugin>
+      
+      
+      <plugin>
+         <!-- Dependency:copy used by an Eclipse Builder only!
+              Copies some JARs to the WEB-INF/lib folder to be
+              found whenn running in GWT Development mode. 
+              
+              These JAR files are here for development mode, otherwise we get strange
+              SAX parsing problems: 
+                org.xml.sax.SAXParseException: schema_reference.4: 
+                Failed to read schema document 'http://www.springframework.org/schema/tx/spring-tx-2.5.xsd', because 1) 
+                could not find the document; 2) the document could not be read; 3) 
+                the root element of the document is not xsd:schema.
+           --> 
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-dependency-plugin</artifactId>
+           <configuration>
+             <artifactItems>
+               <artifactItem>
+                 <groupId>org.springframework</groupId>
+                 <artifactId>spring-web</artifactId>
+                 <version>${spring.version}</version>
+                 <overWrite>false</overWrite>
+                 <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
+               </artifactItem>
+               <artifactItem>
+                 <groupId>ch.yarb</groupId>
+                 <artifactId>service</artifactId>
+                 <version>${project.version}</version>
+                 <overWrite>false</overWrite>
+                 <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
+               </artifactItem>
+               <artifactItem>
+                  <groupId>com.google.gwt</groupId>
+                  <artifactId>gwt-servlet</artifactId>
+                  <version>${gwt.version}</version>
+                 <overWrite>false</overWrite>
+                 <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
+               </artifactItem>
+             </artifactItems>
+           </configuration>
+       </plugin>        
     </plugins>
   </build>
 

@@ -1,2 +1,0 @@
-serviceClass: ch.yarb.gwt.client.YarbGuiService
-path: 52906771F5DB2AE36D2F98CD9E8D6964.gwt.rpc
