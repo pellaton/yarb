@@ -9,15 +9,20 @@ import java.util.TreeSet;
 
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
+import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
+import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
+import org.tmatesoft.svn.core.wc.SVNClientManager;
+import org.tmatesoft.svn.core.wc.SVNDiffClient;
+import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import ch.yarb.api.to.ChangeType;
@@ -93,6 +98,30 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
       case 'M' : return ChangeType.MODIFIED;
       default: throw new IllegalArgumentException("unknown change type '" + type + "'");
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<String> getDiff(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String path) {
+    try {
+      SVNURL fileURL = SVNURL.parseURIEncoded(repoConfiguration.getRepoUrl() + path);
+      SVNRevision fromRevision = SVNRevision.create(revisionRange.getLowerBound().longValue());
+      SVNRevision toRevision = SVNRevision.create(revisionRange.getUpperBound().longValue());
+
+      ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(
+          repoConfiguration.getUserName(), repoConfiguration.getPassword());
+
+      SVNClientManager clientManager = SVNClientManager.newInstance();
+      clientManager.setAuthenticationManager(authManager);
+
+      SVNDiffClient diffClient = clientManager.getDiffClient();
+      diffClient.doDiff(fileURL, fromRevision, fileURL, toRevision, SVNDepth.INFINITY, false, System.out);
+    } catch (SVNException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 }
