@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
@@ -71,7 +70,7 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
       for (Iterator<?> entries = logEntries.iterator(); entries.hasNext();) {
         SVNLogEntry logEntry = (SVNLogEntry) entries.next();
         logEntryList.add(new LogEntry(
-            Long.toString(logEntry.getRevision()), new DateTime(logEntry.getDate().getTime()), logEntry.getAuthor(),
+            Long.toString(logEntry.getRevision()), logEntry.getDate(), logEntry.getAuthor(),
             logEntry.getMessage(), getChangedPathsList(logEntry.getChangedPaths())));
       }
     } catch (SVNException e) {
