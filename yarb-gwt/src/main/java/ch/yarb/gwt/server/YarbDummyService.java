@@ -19,7 +19,6 @@ public class YarbDummyService implements YarbService {
 
   @Override
   public String ping() {
-    // TODO Auto-generated method stub
     return "yarb-dummy";
   }
 
