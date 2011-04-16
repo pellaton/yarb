@@ -8,7 +8,7 @@ public class GwtTestSample extends GWTTestCase {
 
   @Override
   public String getModuleName() {
-    return "ch.yarb.gwt.Application";
+    return "ch.yarb.gwt.Yarb";
   }
 
   public void testSomething() {
