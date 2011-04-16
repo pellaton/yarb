@@ -8,12 +8,58 @@
   <name>Yet Another Repo Browser - POM</name>
   <description>The paren pom of the yarb</description>
   <packaging>pom</packaging>
+  
+  <properties>
+  
+    <jdk.version>1.6</jdk.version>
+    <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+    
+    <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
+    <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+  </properties>
 
   <modules>
     <module>yarb-api</module>
     <module>yarb-gwt</module>
     <module>yarb-service</module>
-  </modules>  
+  </modules>
+  
+    <!-- ### Build configuration ### -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <encoding>ISO-8859-1</encoding>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-source-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>        
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <includes>**/*.java, **/*.properties</includes>
+          <configLocation>${basedir}/.checkstyle.xml</configLocation>
+        </configuration>
+      </plugin>        
+    </plugins>
+  </build>
   
 </project>
     
