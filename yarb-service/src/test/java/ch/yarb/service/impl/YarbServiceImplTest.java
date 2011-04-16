@@ -136,4 +136,18 @@ public class YarbServiceImplTest {
     assertEquals("changed path", "/trunk/module1/file1.txt", changedPath.getPath());
     assertEquals("change type", ChangeType.MODIFIED, changedPath.getChangeType());
   }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for an external repo.
+   */
+  @Test
+  public void getRepositoryLogRevisionExternal() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "http://eclipse-cheatsheet.googlecode.com/svn/trunk/",
+        "anonymous", "anonymous"),
+        RevisionRange.ALL);
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    assertTrue(repositoryLog.size() >= 4);
+  }
 }
