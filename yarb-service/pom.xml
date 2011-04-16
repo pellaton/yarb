@@ -6,6 +6,11 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Yet Another Repo Browser - Service</name>
   <description>The service part of the yarb</description>
+  
+  <properties>
+    <slf4j.version>1.6.1</slf4j.version>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -45,6 +50,23 @@
       <version>3.0.3.RELEASE</version>
       <type>jar</type>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.28</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+      <type>jar</type>
     </dependency>
   </dependencies>
   
