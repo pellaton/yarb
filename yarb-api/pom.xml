@@ -4,8 +4,8 @@
   <groupId>ch.yarb</groupId>
   <artifactId>service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Yet Another Repo Browser - Service</name>
-  <description>The service part of the yarb</description>
+  <name>Yet Another Repo Browser - API</name>
+  <description>The API part of the yarb</description>
   
   <properties>
     <slf4j.version>1.6.1</slf4j.version>
