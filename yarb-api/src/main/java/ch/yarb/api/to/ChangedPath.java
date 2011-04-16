@@ -2,6 +2,8 @@ package ch.yarb.api.to;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 /**
  * Object representing a single changed path in the repository.
  *
@@ -42,5 +44,10 @@ public class ChangedPath implements Serializable {
    */
   public ChangeType getChangeType() {
     return this.changeType;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
   }
 }

@@ -3,6 +3,7 @@ package ch.yarb.api.to;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.joda.time.DateTime;
 
 /**
@@ -80,5 +81,10 @@ public class LogEntry implements Serializable {
    */
   public List<ChangedPath> getChangedPathList() {
     return this.changedPathList;
+  }
+
+  @Override
+  public String toString() {
+    return ReflectionToStringBuilder.toString(this);
   }
 }
