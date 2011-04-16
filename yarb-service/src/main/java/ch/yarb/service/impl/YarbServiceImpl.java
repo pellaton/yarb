@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
@@ -34,6 +36,8 @@ import static org.tmatesoft.svn.core.SVNURL.parseURIEncoded;
  */
 @Service
 public class YarbServiceImpl implements YarbService {
+
+  private static final Logger LOG = LoggerFactory.getLogger(YarbServiceImpl.class);
 
   /** {@inheritDoc} */
   @Override
