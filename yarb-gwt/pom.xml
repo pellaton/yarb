@@ -14,11 +14,11 @@
       <!-- convenience to define GWT version in one place -->
       <gwt.version>2.2.0</gwt.version>
 
-      <!--  tell the compiler we can use 1.5 -->
       <maven.compiler.source>1.6</maven.compiler.source>
       <maven.compiler.target>1.6</maven.compiler.target>
       
       <spring.version>3.0.4.RELEASE</spring.version>
+      <slf4j.version>1.6.1</slf4j.version>      
 
   </properties>
 
@@ -33,6 +33,18 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
       <version>${spring.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.28</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
     </dependency>    
 
     <!--  GWT dependencies (from central repo) -->
@@ -150,6 +162,20 @@
                  <overWrite>false</overWrite>
                  <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
                </artifactItem>
+               <artifactItem>
+                 <groupId>ch.qos.logback</groupId>
+                 <artifactId>logback-classic</artifactId>
+                 <version>0.9.28</version>
+                 <overWrite>false</overWrite>
+                 <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
+               </artifactItem>
+               <artifactItem>
+                 <groupId>org.slf4j</groupId>
+                 <artifactId>slf4j-api</artifactId>
+                 <version>${slf4j.version}</version>
+                 <overWrite>false</overWrite>
+                 <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
+               </artifactItem>                              
              </artifactItems>
            </configuration>
        </plugin>        
