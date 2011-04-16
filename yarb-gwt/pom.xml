@@ -28,7 +28,12 @@
       <artifactId>service</artifactId>
       <version>${project.version}</version>
     </dependency>
-    
+    <dependency>
+      <groupId>ch.yarb</groupId>
+      <artifactId>api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+        
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
@@ -145,13 +150,6 @@
                  <groupId>org.springframework</groupId>
                  <artifactId>spring-web</artifactId>
                  <version>${spring.version}</version>
-                 <overWrite>false</overWrite>
-                 <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
-               </artifactItem>
-               <artifactItem>
-                 <groupId>ch.yarb</groupId>
-                 <artifactId>service</artifactId>
-                 <version>${project.version}</version>
                  <overWrite>false</overWrite>
                  <outputDirectory>${basedir}/war/WEB-INF/lib</outputDirectory>
                </artifactItem>

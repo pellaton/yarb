@@ -1,5 +1,7 @@
 package ch.yarb.gwt.client;
 
+import java.util.List;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -22,7 +24,11 @@ public class Yarb implements EntryPoint {
 
       @Override
       public void onSuccess(String result) {
-        final Label label = new Label("yarb says: " + result);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(result);
+
+        final Label label = new Label("yarb says: " + sb.toString());
         RootPanel.get().add(label);
       }
 
@@ -32,6 +38,28 @@ public class Yarb implements EntryPoint {
         RootPanel.get().add(label);
       }
     });
+
+
+    yarbGuiService.getRepositoryLog(new AsyncCallback<List<String>>() {
+
+      @Override
+      public void onFailure(Throwable caught) {
+        final Label label = new Label("list : " + caught);
+        RootPanel.get().add(label);
+      }
+
+      @Override
+      public void onSuccess(List<String> result) {
+        StringBuilder sb = new StringBuilder();
+
+        for (String curResult : result) {
+          sb.append(curResult);
+        }
+
+        final Label label = new Label("yarb says: " + sb.toString());
+        RootPanel.get().add(label);
+
+      }});
 
 
     System.out.println("got called and wrote out the label.. ");
