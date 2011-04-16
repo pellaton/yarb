@@ -108,6 +108,25 @@ public class YarbServiceImplTest {
   }
 
   /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for the full test
+   * repository and with an author filter.
+   */
+  @Test
+  public void getRepositoryLogFiltertNoMatch() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        RevisionRange.ALL, new LogFilter("foo", null));
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    for (LogEntry entry : repositoryLog) {
+      if (entry.getAuthor() != null) {
+        assertFalse(entry.getAuthor().contains("foo"));
+      }
+    }
+  }
+
+  /**
    * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for a specific path.
    */
   @Test
