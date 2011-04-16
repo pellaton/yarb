@@ -66,4 +66,9 @@ public class ChangedPath implements Serializable {
   public ChangeType getChangeType() {
     return this.changeType;
   }
+
+  @Override
+  public String toString() {
+    return "ChangedPath {changeType: " + this.changeType + ", path: " + this.path + "}";
+  }
 }

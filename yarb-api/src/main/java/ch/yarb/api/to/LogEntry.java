@@ -126,4 +126,9 @@ public class LogEntry implements Serializable {
     this.timestamp = timestamp;
   }
 
+  @Override
+  public String toString() {
+    return "LogEntry {revision: " + this.revision + ", comment: " + this.comment + "}";
+  }
+
 }
