@@ -34,6 +34,13 @@ public class YarbServiceImpl implements YarbService {
   /** {@inheritDoc} */
   @Override
   public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration, RevisionRange revisionRange) {
+    return this.getRepositoryLog(repoConfiguration, revisionRange, "");
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration, RevisionRange revisionRange,
+      String... paths) {
 
     if (repoConfiguration == null) {
       throw new IllegalArgumentException("The argument 'repoConfiguration' must not be null");
@@ -43,7 +50,26 @@ public class YarbServiceImpl implements YarbService {
       throw new IllegalArgumentException("The argument 'revisionRange' must not be null");
     }
 
-    return this.repositoryClient.getRepositoryLog(repoConfiguration, revisionRange);
+    return this.repositoryClient.getRepositoryLog(repoConfiguration, revisionRange, paths);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public List<String> getDiff(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String path) {
+
+    if (repoConfiguration == null) {
+      throw new IllegalArgumentException("The argument 'repoConfiguration' must not be null");
+    }
+
+    if (revisionRange == null) {
+      throw new IllegalArgumentException("The argument 'revisionRange' must not be null");
+    }
+
+    if (path == null) {
+      throw new IllegalArgumentException("The argument 'path' must not be null");
+    }
+
+    return this.repositoryClient.getDiff(repoConfiguration, revisionRange, path);
   }
 }
 

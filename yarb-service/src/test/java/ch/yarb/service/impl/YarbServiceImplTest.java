@@ -1,3 +1,4 @@
+
 package ch.yarb.service.impl;
 
 import java.io.File;
@@ -8,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.tmatesoft.svn.core.SVNException;
 
 import ch.yarb.api.service.YarbService;
 import ch.yarb.api.to.ChangeType;
@@ -91,10 +93,11 @@ public class YarbServiceImplTest {
    */
   @Test
   public void getRepositoryLogRevisionSpecificPath() {
+    String path = "/trunk/module1/file1.txt";
     List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
-        "file://" + new File("./src/test/resources/svntestrepo/trunk/module1/file1.txt").getAbsolutePath(),
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
         "anonymous", "anonymous"),
-        RevisionRange.ALL);
+        RevisionRange.ALL, path);
     assertNotNull(repositoryLog);
     assertFalse(repositoryLog.isEmpty());
     assertTrue(repositoryLog.size() >= 2);
@@ -105,7 +108,32 @@ public class YarbServiceImplTest {
     assertEquals("commit comment", "corrected text", logEntry.getComment());
     assertNotNull("commit timestamp", logEntry.getTimestamp());
     for (ChangedPath changedPath :  logEntry.getChangedPathList()) {
-      assertTrue("changed path", changedPath.getPath().endsWith("/trunk/module1/file1.txt"));
+      assertTrue("changed path", changedPath.getPath().endsWith(path));
+    }
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for multiple specific paths.
+   */
+  @Test
+  public void getRepositoryLogMultipleSpecificPaths() {
+    String path1 = "/trunk/module1/file1.txt";
+    String path2 = "/trunk/module2/somefile";
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        RevisionRange.ALL, path1, path2);
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    assertTrue(repositoryLog.size() >= 3);
+    LogEntry logEntry = repositoryLog.get(1);
+    assertNotNull(logEntry);
+    assertEquals("commit revision", "4", logEntry.getRevision());
+    assertEquals("commit author", "michael", logEntry.getAuthor());
+    assertEquals("commit comment", "corrected text", logEntry.getComment());
+    assertNotNull("commit timestamp", logEntry.getTimestamp());
+    for (ChangedPath changedPath :  logEntry.getChangedPathList()) {
+      assertTrue("changed path", changedPath.getPath().endsWith(path1) || changedPath.getPath().endsWith(path2));
     }
 
   }
@@ -149,5 +177,29 @@ public class YarbServiceImplTest {
     assertNotNull(repositoryLog);
     assertFalse(repositoryLog.isEmpty());
     assertTrue(repositoryLog.size() >= 4);
+  }
+
+
+  @Test
+  public void foo() throws SVNException {
+    // initialize the support for the local file access
+//    FSRepositoryFactory.setup();
+//    ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(
+//        "anonymous", "anonymous");
+//
+//    SVNClientManager clientManager = SVNClientManager.newInstance();
+//    clientManager.setAuthenticationManager(authManager);
+//
+//    SVNDiffClient diffClient = clientManager.getDiffClient();
+//    SVNURL svnUrl = SVNURL.parseURIEncoded(
+//        "file://" + new File("./src/test/resources/svntestrepo/trunk/module1/file1.txt").getAbsolutePath());
+//    SVNRevision rev1 = SVNRevision.create(3L);
+//    SVNRevision rev2 = SVNRevision.create(4L);
+//    diffClient.doDiff(svnUrl, rev1, svnUrl, rev2, SVNDepth.INFINITY, false, System.out);
+//    //SVNDiffClient diffClient = clientManager.getDiffClient();$
+
+    this.service.getDiff(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"), new RevisionRange(Long.valueOf(2L), Long.valueOf(7L)), "/trunk/module1/file1.txt");
   }
 }
