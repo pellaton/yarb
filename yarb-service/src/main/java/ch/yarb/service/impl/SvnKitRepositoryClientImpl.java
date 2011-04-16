@@ -131,7 +131,7 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
   private List<String> simplifyWhenEmpty(List<String> diffList) {
     // If there is no diff between revisions, svnkit returns an empty string.
     // In that case, we prefer returning an empty list instead of a list containing a single empty string.
-    if (diffList.size() == 1 && "".equals(diffList.get(0))){
+    if (diffList.size() == 1 && "".equals(diffList.get(0))) {
       return Collections.emptyList();
     }
     return diffList;
