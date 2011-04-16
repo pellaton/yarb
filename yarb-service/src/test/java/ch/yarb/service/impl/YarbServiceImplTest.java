@@ -14,6 +14,7 @@ import ch.yarb.api.service.YarbService;
 import ch.yarb.api.to.ChangeType;
 import ch.yarb.api.to.ChangedPath;
 import ch.yarb.api.to.LogEntry;
+import ch.yarb.api.to.LogFilter;
 import ch.yarb.api.to.RepoConfiguration;
 import ch.yarb.api.to.RevisionRange;
 
@@ -85,6 +86,25 @@ public class YarbServiceImplTest {
     assertEquals(3, changedPathList.size());
     assertEquals("/branches", changedPathList.get(0).getPath());
     assertEquals(ChangeType.ADDED, changedPathList.get(0).getChangeType());
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for the full test
+   * repository and with an author filter.
+   */
+  @Test
+  public void getRepositoryLogFiltert() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        RevisionRange.ALL, new LogFilter("michael", null));
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    for (LogEntry entry : repositoryLog) {
+      if (entry.getAuthor() != null) {
+        assertFalse(entry.getAuthor().contains("michael"));
+      }
+    }
   }
 
   /**
