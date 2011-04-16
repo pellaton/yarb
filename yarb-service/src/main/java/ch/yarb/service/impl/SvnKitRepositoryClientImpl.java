@@ -1,7 +1,10 @@
 package ch.yarb.service.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -116,11 +119,23 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
       clientManager.setAuthenticationManager(authManager);
 
       SVNDiffClient diffClient = clientManager.getDiffClient();
-      diffClient.doDiff(fileURL, fromRevision, fileURL, toRevision, SVNDepth.INFINITY, false, System.out);
+      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      diffClient.doDiff(fileURL, fromRevision, fileURL, toRevision, SVNDepth.INFINITY, false, outputStream);
+      return simplifyWhenEmpty(Arrays.asList(outputStream.toString().split("\\n")));
     } catch (SVNException e) {
       e.printStackTrace();
     }
     return null;
   }
 
+  private List<String> simplifyWhenEmpty(List<String> diffList) {
+    // If there is no diff between revisions, svnkit returns an empty string.
+    // In that case, we prefer returning an empty list instead of a list containing a single empty string.
+    if (diffList.size() == 1 && "".equals(diffList.get(0))){
+      return Collections.emptyList();
+    }
+    return diffList;
+  }
+
 }
+

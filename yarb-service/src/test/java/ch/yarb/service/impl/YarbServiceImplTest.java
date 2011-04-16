@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.tmatesoft.svn.core.SVNException;
 
 import ch.yarb.api.service.YarbService;
 import ch.yarb.api.to.ChangeType;
@@ -180,26 +179,28 @@ public class YarbServiceImplTest {
   }
 
 
+  /**
+   * Tests {@link YarbServiceImpl#getDiff(RepoConfiguration, RevisionRange, String)}.
+   */
   @Test
-  public void foo() throws SVNException {
-    // initialize the support for the local file access
-//    FSRepositoryFactory.setup();
-//    ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(
-//        "anonymous", "anonymous");
-//
-//    SVNClientManager clientManager = SVNClientManager.newInstance();
-//    clientManager.setAuthenticationManager(authManager);
-//
-//    SVNDiffClient diffClient = clientManager.getDiffClient();
-//    SVNURL svnUrl = SVNURL.parseURIEncoded(
-//        "file://" + new File("./src/test/resources/svntestrepo/trunk/module1/file1.txt").getAbsolutePath());
-//    SVNRevision rev1 = SVNRevision.create(3L);
-//    SVNRevision rev2 = SVNRevision.create(4L);
-//    diffClient.doDiff(svnUrl, rev1, svnUrl, rev2, SVNDepth.INFINITY, false, System.out);
-//    //SVNDiffClient diffClient = clientManager.getDiffClient();$
-
-    this.service.getDiff(new RepoConfiguration(
+  public void getDiff() {
+    List<String> diff = this.service.getDiff(new RepoConfiguration(
         "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
         "anonymous", "anonymous"), new RevisionRange(Long.valueOf(2L), Long.valueOf(7L)), "/trunk/module1/file1.txt");
+    assertNotNull(diff);
+    assertTrue(diff.size() >= 7);
+    assertEquals("+This is the file number 1", diff.get(6));
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getDiff(RepoConfiguration, RevisionRange, String)}.
+   */
+  @Test
+  public void getDiffSame() {
+    List<String> diff = this.service.getDiff(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"), new RevisionRange(Long.valueOf(7L), Long.valueOf(7L)), "/trunk/module1/file1.txt");
+    assertNotNull(diff);
+    assertEquals(0, diff.size());
   }
 }
