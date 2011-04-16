@@ -60,7 +60,8 @@ public class YarbServiceImplTest {
   }
 
   /**
-   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)}.
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for the full test
+   * repository and the full version range.
    */
   @Test
   public void getRepositoryLogRevision() {
@@ -83,5 +84,56 @@ public class YarbServiceImplTest {
     assertEquals(3, changedPathList.size());
     assertEquals("/branches", changedPathList.get(0).getPath());
     assertEquals(ChangeType.ADDED, changedPathList.get(0).getChangeType());
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for a specific path.
+   */
+  @Test
+  public void getRepositoryLogRevisionSpecificPath() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo/trunk/module1/file1.txt").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        RevisionRange.ALL);
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    assertTrue(repositoryLog.size() >= 2);
+    LogEntry logEntry = repositoryLog.get(1);
+    assertNotNull(logEntry);
+    assertEquals("commit revision", "4", logEntry.getRevision());
+    assertEquals("commit author", "michael", logEntry.getAuthor());
+    assertEquals("commit comment", "corrected text", logEntry.getComment());
+    assertNotNull("commit timestamp", logEntry.getTimestamp());
+    for (ChangedPath changedPath :  logEntry.getChangedPathList()) {
+      assertTrue("changed path", changedPath.getPath().endsWith("/trunk/module1/file1.txt"));
+    }
+
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for a specific version range.
+   */
+  @Test
+  public void getRepositoryLogRevisionSpecificVersionRange() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        new RevisionRange(Long.valueOf(4), Long.valueOf(4)));
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    assertEquals(1, repositoryLog.size());
+    LogEntry logEntry = repositoryLog.get(0);
+    assertNotNull(logEntry);
+    assertEquals("commit revision", "4", logEntry.getRevision());
+    assertEquals("commit author", "michael", logEntry.getAuthor());
+    assertEquals("commit comment", "corrected text", logEntry.getComment());
+    assertNotNull("commit timestamp", logEntry.getTimestamp());
+    List<ChangedPath> changedPathList = logEntry.getChangedPathList();
+    assertNotNull("changed paths", changedPathList);
+    assertEquals(1, changedPathList.size());
+    ChangedPath changedPath = changedPathList.get(0);
+    assertNotNull("changed path", changedPath);
+    assertEquals("changed path", "/trunk/module1/file1.txt", changedPath.getPath());
+    assertEquals("change type", ChangeType.MODIFIED, changedPath.getChangeType());
   }
 }
