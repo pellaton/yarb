@@ -3,6 +3,8 @@ package ch.yarb.api.to;
 import java.io.Serializable;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 /**
  * An object representing a single entry in the repository log.
  *
@@ -11,6 +13,7 @@ import java.util.List;
 public class LogEntry implements Serializable {
 
   private final String revision;
+  private final DateTime timestamp;
   private final String author;
   private final String comment;
   private final List<ChangedPath> changedPathList;
@@ -24,9 +27,10 @@ public class LogEntry implements Serializable {
    * @param comment the comment
    * @param changedPathList the list of changed paths
    */
-  public LogEntry(String revision, String author, String comment,
+  public LogEntry(String revision, DateTime timestamp, String author, String comment,
       List<ChangedPath> changedPathList) {
     this.revision = revision;
+    this.timestamp = timestamp;
     this.author = author;
     this.comment = comment;
     this.changedPathList = changedPathList;
@@ -40,6 +44,15 @@ public class LogEntry implements Serializable {
    */
   public String getRevision() {
     return this.revision;
+  }
+
+  /**
+   * Gets the timestamp.
+   *
+   * @return the timestamp
+   */
+  public DateTime getTimestamp() {
+    return this.timestamp;
   }
 
   /**
