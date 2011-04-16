@@ -29,7 +29,7 @@ public class LogEntry implements Serializable {
   public LogEntry(String revision, Date timestamp, String author, String comment,
       List<ChangedPath> changedPathList) {
     this.revision = revision;
-    this.timestamp = timestamp;
+    this.timestamp = new Date(timestamp.getTime());
     this.author = author;
     this.comment = comment;
     this.changedPathList = changedPathList;
