@@ -31,7 +31,7 @@
   
   <servlet-mapping>
     <servlet-name>yarbGuiService</servlet-name>
-    <url-pattern>/service</url-pattern>
+    <url-pattern>/ch.yarb.gwt.Yarb/service</url-pattern>
   </servlet-mapping>
  
   <!-- Default page to serve -->
