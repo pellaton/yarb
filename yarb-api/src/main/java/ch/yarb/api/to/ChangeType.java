@@ -1,4 +1,4 @@
-package ch.yarb.service.to;
+package ch.yarb.api.to;
 
 
 /**

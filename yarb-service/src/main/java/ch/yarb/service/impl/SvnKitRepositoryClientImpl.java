@@ -20,11 +20,11 @@ import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-import ch.yarb.service.to.ChangeType;
-import ch.yarb.service.to.ChangedPath;
-import ch.yarb.service.to.LogEntry;
-import ch.yarb.service.to.RepoConfiguration;
-import ch.yarb.service.to.RevisionRange;
+import ch.yarb.api.to.ChangeType;
+import ch.yarb.api.to.ChangedPath;
+import ch.yarb.api.to.LogEntry;
+import ch.yarb.api.to.RepoConfiguration;
+import ch.yarb.api.to.RevisionRange;
 
 import static org.tmatesoft.svn.core.SVNURL.parseURIEncoded;
 

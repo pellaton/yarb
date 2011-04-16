@@ -2,9 +2,9 @@ package ch.yarb.service.impl;
 
 import java.util.List;
 
-import ch.yarb.service.to.LogEntry;
-import ch.yarb.service.to.RepoConfiguration;
-import ch.yarb.service.to.RevisionRange;
+import ch.yarb.api.to.LogEntry;
+import ch.yarb.api.to.RepoConfiguration;
+import ch.yarb.api.to.RevisionRange;
 
 /**
  * Interface to repository clients.

@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.yarb.service.api.YarbService;
-import ch.yarb.service.to.LogEntry;
-import ch.yarb.service.to.RepoConfiguration;
-import ch.yarb.service.to.RevisionRange;
+import ch.yarb.api.service.YarbService;
+import ch.yarb.api.to.LogEntry;
+import ch.yarb.api.to.RepoConfiguration;
+import ch.yarb.api.to.RevisionRange;
 
 /**
  * Yarb service implementation.

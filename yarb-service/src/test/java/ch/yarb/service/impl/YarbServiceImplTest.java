@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.yarb.service.api.YarbService;
-import ch.yarb.service.to.ChangeType;
-import ch.yarb.service.to.ChangedPath;
-import ch.yarb.service.to.LogEntry;
-import ch.yarb.service.to.RepoConfiguration;
-import ch.yarb.service.to.RevisionRange;
+import ch.yarb.api.service.YarbService;
+import ch.yarb.api.to.ChangeType;
+import ch.yarb.api.to.ChangedPath;
+import ch.yarb.api.to.LogEntry;
+import ch.yarb.api.to.RepoConfiguration;
+import ch.yarb.api.to.RevisionRange;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
