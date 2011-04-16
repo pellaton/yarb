@@ -21,8 +21,19 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>ch.yarb</groupId>
+      <artifactId>service</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>3.0.4.RELEASE</version>
+    </dependency>    
 
-      <!--  GWT dependencies (from central repo) -->
+    <!--  GWT dependencies (from central repo) -->
     <dependency>
       <groupId>com.google.gwt</groupId>
       <artifactId>gwt-servlet</artifactId>
