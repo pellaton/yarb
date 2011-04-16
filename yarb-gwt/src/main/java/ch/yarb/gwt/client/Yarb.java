@@ -4,9 +4,15 @@ import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+
+import ch.yarb.api.to.LogEntry;
 
 
 /**
@@ -14,54 +20,52 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class Yarb implements EntryPoint {
 
+
+  private YarbGuiServiceAsync yarbGuiService;
+
   /**
    * This is the entry point method.
    */
   public void onModuleLoad() {
-    YarbGuiServiceAsync yarbGuiService = GWT.create(YarbGuiService.class);
+    this.yarbGuiService = GWT.create(YarbGuiService.class);
 
-    yarbGuiService.ping(new AsyncCallback<String>() {
+    final Label label = new Label("welcome to yarb: ");
+    final TextBox box = new TextBox();
+    final Button button = new Button("go");
 
-      @Override
-      public void onSuccess(String result) {
+    RootPanel.get().add(label);
+    RootPanel.get().add(box);
+    RootPanel.get().add(button);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(result);
-
-        final Label label = new Label("yarb says: " + sb.toString());
-        RootPanel.get().add(label);
-      }
+    button.addClickHandler(new ClickHandler() {
 
       @Override
-      public void onFailure(Throwable arg0) {
-        final Label label = new Label("yarb failed to say anything.. : " + arg0);
-        RootPanel.get().add(label);
+      public void onClick(ClickEvent event) {
+
+        String url = box.getValue();
+
+        Yarb.this.yarbGuiService.getRepositoryLog(url, new RepoCallback());
+
       }
     });
 
-
-    yarbGuiService.getRepositoryLog(new AsyncCallback<List<String>>() {
-
-      @Override
-      public void onFailure(Throwable caught) {
-        final Label label = new Label("list : " + caught);
-        RootPanel.get().add(label);
-      }
-
-      @Override
-      public void onSuccess(List<String> result) {
-        StringBuilder sb = new StringBuilder();
-
-        for (String curResult : result) {
-          sb.append(curResult);
-        }
-
-        final Label label = new Label("yarb says: " + sb.toString());
-        RootPanel.get().add(label);
-
-      }});
-
-
-    System.out.println("got called and wrote out the label.. ");
   }
+
+  private final class RepoCallback implements AsyncCallback<List<LogEntry>> {
+
+    @Override
+    public void onFailure(Throwable caught) {
+      System.out.println("onFailure: " + caught);
+    }
+
+    @Override
+    public void onSuccess(List<LogEntry> result) {
+      for (LogEntry curResult : result) {
+        RootPanel.get().add(
+            new Label(curResult.getRevision() + " - " + curResult.getChangedPathList()));
+      }
+    }
+  }
+
+
 }

@@ -1,9 +1,8 @@
 package ch.yarb.gwt.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.joda.time.DateTime;
 
 import ch.yarb.api.service.YarbService;
 import ch.yarb.api.to.ChangedPath;
@@ -26,11 +25,27 @@ public class YarbDummyService implements YarbService {
   public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration,
       RevisionRange revisionRange) {
     List<LogEntry> log = new ArrayList<LogEntry>();
-    log.add(new LogEntry("1", new DateTime(), "mro", "foo", new ArrayList<ChangedPath>()));
-    log.add(new LogEntry("2", new DateTime(), "mro", "bar", new ArrayList<ChangedPath>()));
-    log.add(new LogEntry("3", new DateTime(), "mro", "less", new ArrayList<ChangedPath>()));
+    log.add(new LogEntry("1", new Date(), "mro", "foo", new ArrayList<ChangedPath>()));
+    log.add(new LogEntry("2", new Date(), "mro", "bar", new ArrayList<ChangedPath>()));
+    log.add(new LogEntry("3", new Date(), "mro", "less", new ArrayList<ChangedPath>()));
 
     return log;
+  }
+
+  @Override
+  public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration,
+      RevisionRange revisionRange,
+      String... paths) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<String> getDiff(RepoConfiguration repoConfiguration,
+      RevisionRange revisionRange,
+      String path) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

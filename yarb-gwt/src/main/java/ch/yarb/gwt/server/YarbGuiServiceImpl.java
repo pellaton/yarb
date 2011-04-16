@@ -1,6 +1,5 @@
 package ch.yarb.gwt.server;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -46,17 +45,12 @@ public class YarbGuiServiceImpl extends RemoteServiceServlet implements YarbGuiS
     return this.yarbService.ping();
   }
 
-  public List<String> getRepositoryLog() {
-    RepoConfiguration repoConfiguration = new RepoConfiguration("", "", "");
+  public List<LogEntry> getRepositoryLog(String url) {
+    RepoConfiguration repoConfiguration = new RepoConfiguration(url, "", "");
     RevisionRange revisionRange = RevisionRange.ALL;
     List<LogEntry> repositoryLog = this.yarbService.getRepositoryLog(repoConfiguration, revisionRange);
 
-    List<String> logEntries = new ArrayList<String>();
-    for (LogEntry curLog : repositoryLog) {
-      logEntries.add(curLog.toString());
-    }
-
-    return logEntries;
+    return repositoryLog;
   }
 
 }
