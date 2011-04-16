@@ -93,7 +93,7 @@ public class YarbServiceImplTest {
    * repository and with an author filter.
    */
   @Test
-  public void getRepositoryLogFiltert() {
+  public void getRepositoryLogAuthorFilter() {
     List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
         "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
         "anonymous", "anonymous"),
@@ -112,7 +112,7 @@ public class YarbServiceImplTest {
    * repository and with an author filter.
    */
   @Test
-  public void getRepositoryLogFiltertNoMatch() {
+  public void getRepositoryLogAuthorFilterNoMatch() {
     List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
         "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
         "anonymous", "anonymous"),
@@ -122,6 +122,25 @@ public class YarbServiceImplTest {
     for (LogEntry entry : repositoryLog) {
       if (entry.getAuthor() != null) {
         assertFalse(entry.getAuthor().contains("foo"));
+      }
+    }
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for the full test
+   * repository and with a comment filter.
+   */
+  @Test
+  public void getRepositoryLogCommentFilterNoMatch() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        RevisionRange.ALL, new LogFilter(null, "bump"));
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    for (LogEntry entry : repositoryLog) {
+      if (entry.getComment() != null) {
+        assertTrue(entry.getComment().contains("bump"));
       }
     }
   }

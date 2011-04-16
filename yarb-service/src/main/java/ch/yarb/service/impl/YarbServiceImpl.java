@@ -62,14 +62,14 @@ public class YarbServiceImpl implements YarbService {
 
     List<LogEntry> filteredList = new ArrayList<LogEntry>();
     for (LogEntry each : log) {
-      if (!filterVeto(authorFilter, commentFilter, each)) {
+      if (!(authorFilterVeto(authorFilter, each) || commentFilterVeto(commentFilter, each))) {
         filteredList.add(each);
       }
     }
     return filteredList;
   }
 
-  private boolean filterVeto(List<String> authorFilter, List<String> commentFilter, LogEntry each) {
+  private boolean authorFilterVeto(List<String> authorFilter, LogEntry each) {
     if (each.getAuthor() == null) {
       return false;
     }
@@ -80,13 +80,21 @@ public class YarbServiceImpl implements YarbService {
         return true;
       }
     }
+    return false;
+  }
+
+  private boolean commentFilterVeto(List<String> commentFilter, LogEntry each) {
+    if (each.getAuthor() == null) {
+      return false;
+    }
+
     String comment = each.getComment().toLowerCase();
     for (String filter : commentFilter) {
       if (comment.contains(filter.toLowerCase())) {
         return false;
       }
     }
-    return false;
+    return true;
   }
 
   private List<String> getCommentFilter(LogFilter filter) {
