@@ -91,10 +91,11 @@ public class YarbServiceImplTest {
    */
   @Test
   public void getRepositoryLogRevisionSpecificPath() {
+    String path = "/trunk/module1/file1.txt";
     List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
-        "file://" + new File("./src/test/resources/svntestrepo/trunk/module1/file1.txt").getAbsolutePath(),
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
         "anonymous", "anonymous"),
-        RevisionRange.ALL);
+        RevisionRange.ALL, path);
     assertNotNull(repositoryLog);
     assertFalse(repositoryLog.isEmpty());
     assertTrue(repositoryLog.size() >= 2);
@@ -105,7 +106,32 @@ public class YarbServiceImplTest {
     assertEquals("commit comment", "corrected text", logEntry.getComment());
     assertNotNull("commit timestamp", logEntry.getTimestamp());
     for (ChangedPath changedPath :  logEntry.getChangedPathList()) {
-      assertTrue("changed path", changedPath.getPath().endsWith("/trunk/module1/file1.txt"));
+      assertTrue("changed path", changedPath.getPath().endsWith(path));
+    }
+  }
+
+  /**
+   * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for multiple specific paths.
+   */
+  @Test
+  public void getRepositoryLogMultipleSpecificPaths() {
+    String path1 = "/trunk/module1/file1.txt";
+    String path2 = "/trunk/module2/somefile";
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        RevisionRange.ALL, path1, path2);
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    assertTrue(repositoryLog.size() >= 3);
+    LogEntry logEntry = repositoryLog.get(1);
+    assertNotNull(logEntry);
+    assertEquals("commit revision", "4", logEntry.getRevision());
+    assertEquals("commit author", "michael", logEntry.getAuthor());
+    assertEquals("commit comment", "corrected text", logEntry.getComment());
+    assertNotNull("commit timestamp", logEntry.getTimestamp());
+    for (ChangedPath changedPath :  logEntry.getChangedPathList()) {
+      assertTrue("changed path", changedPath.getPath().endsWith(path1) || changedPath.getPath().endsWith(path2));
     }
 
   }

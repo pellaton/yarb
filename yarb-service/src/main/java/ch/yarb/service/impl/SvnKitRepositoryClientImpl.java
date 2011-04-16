@@ -34,7 +34,7 @@ import static org.tmatesoft.svn.core.SVNURL.parseURIEncoded;
  * @author pellaton
  */
 @Service
-public class SvnKitRepositoryClientImpl  implements RepositoryClient {
+public class SvnKitRepositoryClientImpl implements RepositoryClient {
 
   /**
    * Default constructor.
@@ -52,7 +52,8 @@ public class SvnKitRepositoryClientImpl  implements RepositoryClient {
    * {@inheritDoc}
    */
   @Override
-  public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration, RevisionRange revisionRange) {
+  public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration, RevisionRange revisionRange,
+      String... paths) {
     List<LogEntry> logEntryList = new ArrayList<LogEntry>();
     try {
       SVNRepository repository = SVNRepositoryFactory.create(parseURIEncoded(repoConfiguration.getRepoUrl()));
@@ -60,7 +61,7 @@ public class SvnKitRepositoryClientImpl  implements RepositoryClient {
           repoConfiguration.getUserName(), repoConfiguration.getPassword());
       repository.setAuthenticationManager(authManager);
 
-      Collection<?> logEntries = repository.log(new String[]{""}, null, revisionRange.getLowerBound(),
+      Collection<?> logEntries = repository.log(paths, null, revisionRange.getLowerBound(),
           revisionRange.getUpperBound(), true, true);
       for (Iterator<?> entries = logEntries.iterator(); entries.hasNext();) {
         SVNLogEntry logEntry = (SVNLogEntry) entries.next();

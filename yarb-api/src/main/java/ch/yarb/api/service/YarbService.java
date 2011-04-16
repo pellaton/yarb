@@ -30,4 +30,15 @@ public interface YarbService {
    * @throws IllegalArgumentException if either {@code repoConfiguration} or {@code revisionRange} is {@code null}
    */
   List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration, RevisionRange revisionRange);
+
+  /**
+   * Gets the log for the repository and the revision range specified.
+   *
+   * @param repoConfiguration the repository configuration (must not be null)
+   * @param revisionRange the revision range to fetch (must not be null)
+   * @param paths the repository url relative paths to get the logs for
+   * @return the log entries
+   * @throws IllegalArgumentException if either {@code repoConfiguration} or {@code revisionRange} is {@code null}
+   */
+  List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String... paths);
 }
