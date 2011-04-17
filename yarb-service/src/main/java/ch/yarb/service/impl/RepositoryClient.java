@@ -34,4 +34,12 @@ public interface RepositoryClient {
    */
   List<String> getDiff(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String path);
 
+  /**
+   * Gets the latest repo revision.
+   *
+   * @param repoConfiguration the repository coinfiguration
+   * @return the latest revision
+   */
+  long getLatestRepoRevision(RepoConfiguration repoConfiguration);
+
 }

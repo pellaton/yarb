@@ -3,51 +3,60 @@ package ch.yarb.api.to;
 import java.io.Serializable;
 
 /**
- * Object representing a revision range.
- *
- * @author pellaton
+ * Object representing a fetch revision range.
  */
 public class RevisionRange implements Serializable {
 
-  /** The lowest minimal version number. */
-  public static final Long LOWER_MIN = 0L;
-
-  /** The maximum upper version number (using it means that all entries up to the current one are included). */
-  public static final Long UPPER_MAX = -1L;
-
   /** Convenience instance that can be used to fetch all revisions. */
-  public static final RevisionRange ALL = new RevisionRange(LOWER_MIN, UPPER_MAX);
+  public static final RevisionRange ALL = new RevisionRange(null, Long.MAX_VALUE);
 
-  private final Long lowerBound;
-  private final Long upperBound;
-
+  private Long revision;
+  private Long fetchCount;
 
   /**
    * Constructor.
    *
-   * @param lowerBound the lower version range bound (inclusive)
-   * @param upperBound the upper version range bound (inclusive)
+   * @param revision the revision to fetch from (upper bound, {@code null} means HEAD)
+   * @param fetchCount the max number of log entries returned
    */
-  public RevisionRange(Long lowerBound, Long upperBound) {
-    this.lowerBound = lowerBound;
-    this.upperBound = upperBound;
+  public RevisionRange(Long revision, Long fetchCount) {
+    this.setRevision(revision);
+    this.setFetchCount(fetchCount);
   }
 
   /**
-   * Gets the lower version range bound (inclusive).
+   * Gets the revision.
    *
-   * @return the lower version range bound (inclusive)
+   * @return the revision
    */
-  public Long getLowerBound() {
-    return this.lowerBound;
+  public Long getRevision() {
+    return this.revision;
   }
 
   /**
-   * Gets the upper version range bound (inclusive).
+   * Sets the revision.
    *
-   * @return the upper version range bound (inclusive)
+   * @param revision the revision to set
    */
-  public Long getUpperBound() {
-    return this.upperBound;
+  public void setRevision(Long revision) {
+    this.revision = revision;
+  }
+
+  /**
+   * Gets the fetch count.
+   *
+   * @return the fetch count
+   */
+  public Long getFetchCount() {
+    return this.fetchCount;
+  }
+
+  /**
+   * Sets the fetch count.
+   *
+   * @param fetchCount the fetch count to set
+   */
+  public void setFetchCount(Long fetchCount) {
+    this.fetchCount = fetchCount;
   }
 }

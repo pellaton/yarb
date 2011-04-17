@@ -1,8 +1,6 @@
 package ch.yarb.service.impl;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -11,20 +9,15 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.springframework.stereotype.Service;
-import org.tmatesoft.svn.core.SVNDepth;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
-import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.fs.FSRepositoryFactory;
 import org.tmatesoft.svn.core.internal.io.svn.SVNRepositoryFactoryImpl;
 import org.tmatesoft.svn.core.io.SVNRepository;
 import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
-import org.tmatesoft.svn.core.wc.SVNClientManager;
-import org.tmatesoft.svn.core.wc.SVNDiffClient;
-import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import ch.yarb.api.to.ChangeType;
@@ -68,8 +61,10 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
           repoConfiguration.getUserName(), repoConfiguration.getPassword());
       repository.setAuthenticationManager(authManager);
 
-      Collection<?> logEntries = repository.log(paths, null, revisionRange.getLowerBound(),
-          revisionRange.getUpperBound(), true, true);
+      long upperRevisionBound = computeUpperRevisionBound(revisionRange, repoConfiguration);
+      long lowerRevisionBound = computeLowerRevisionBound(revisionRange, upperRevisionBound);
+      Collection<?> logEntries = repository.log(paths, null, lowerRevisionBound,
+          upperRevisionBound, true, true);
       for (Iterator<?> entries = logEntries.iterator(); entries.hasNext();) {
         SVNLogEntry logEntry = (SVNLogEntry) entries.next();
         logEntryList.add(new LogEntry(
@@ -81,6 +76,28 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
     }
 
     return logEntryList;
+  }
+
+  private long computeUpperRevisionBound(RevisionRange revisionRange, RepoConfiguration repoConfiguration) {
+    if (revisionRange.getRevision() == null) {
+      long latestRepoRevision = getLatestRepoRevision(repoConfiguration);
+      if (latestRepoRevision == -1) {
+        throw new RuntimeException("operation failed");
+      }
+      return latestRepoRevision;
+    }
+    return revisionRange.getRevision();
+  }
+
+  private long computeLowerRevisionBound(RevisionRange revisionRange, long upperRevisionBound) {
+    // the lower bound must be upper - number of log entries + 1 because the revisions are inclusive
+    long lowerBound = upperRevisionBound - revisionRange.getFetchCount() + 1;
+
+    // make sure to not fetch nonexisting revisions
+    if (lowerBound < 0) {
+      lowerBound = 0;
+    }
+    return lowerBound;
   }
 
   private List<ChangedPath> getChangedPathsList(Map<?, ?> map) {
@@ -107,24 +124,25 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
    */
   @Override
   public List<String> getDiff(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String path) {
-    try {
-      SVNURL fileURL = SVNURL.parseURIEncoded(repoConfiguration.getRepoUrl() + path);
-      SVNRevision fromRevision = SVNRevision.create(revisionRange.getLowerBound().longValue());
-      SVNRevision toRevision = SVNRevision.create(revisionRange.getUpperBound().longValue());
-
-      ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(
-          repoConfiguration.getUserName(), repoConfiguration.getPassword());
-
-      SVNClientManager clientManager = SVNClientManager.newInstance();
-      clientManager.setAuthenticationManager(authManager);
-
-      SVNDiffClient diffClient = clientManager.getDiffClient();
-      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      diffClient.doDiff(fileURL, fromRevision, fileURL, toRevision, SVNDepth.INFINITY, false, outputStream);
-      return simplifyWhenEmpty(Arrays.asList(outputStream.toString().split("\\n")));
-    } catch (SVNException e) {
-      e.printStackTrace();
-    }
+// FIXME
+//    try {
+//      SVNURL fileURL = SVNURL.parseURIEncoded(repoConfiguration.getRepoUrl() + path);
+//      SVNRevision fromRevision = SVNRevision.create(revisionRange.getLowerBound().longValue());
+//      SVNRevision toRevision = SVNRevision.create(revisionRange.getUpperBound().longValue());
+//
+//      ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(
+//          repoConfiguration.getUserName(), repoConfiguration.getPassword());
+//
+//      SVNClientManager clientManager = SVNClientManager.newInstance();
+//      clientManager.setAuthenticationManager(authManager);
+//
+//      SVNDiffClient diffClient = clientManager.getDiffClient();
+//      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//      diffClient.doDiff(fileURL, fromRevision, fileURL, toRevision, SVNDepth.INFINITY, false, outputStream);
+//      return simplifyWhenEmpty(Arrays.asList(outputStream.toString().split("\\n")));
+//    } catch (SVNException e) {
+//      e.printStackTrace();
+//    }
     return null;
   }
 
@@ -135,6 +153,21 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
       return Collections.emptyList();
     }
     return diffList;
+  }
+
+  @Override
+  public long getLatestRepoRevision(RepoConfiguration repoConfiguration) {
+    SVNRepository repository;
+    try {
+      repository = SVNRepositoryFactory.create(parseURIEncoded(repoConfiguration.getRepoUrl()));
+      ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(
+          repoConfiguration.getUserName(), repoConfiguration.getPassword());
+      repository.setAuthenticationManager(authManager);
+      return repository.getLatestRevision();
+    } catch (SVNException e) {
+      e.printStackTrace();
+    }
+    return -1;
   }
 
 }
