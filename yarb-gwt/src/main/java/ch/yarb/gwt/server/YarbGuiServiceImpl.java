@@ -30,7 +30,6 @@ public class YarbGuiServiceImpl extends RemoteServiceServlet implements YarbGuiS
 
   @Override
   public void init(ServletConfig config) throws ServletException {
-    // TODO Auto-generated method stub
     super.init(config);
 
     // spring application context
@@ -46,10 +45,11 @@ public class YarbGuiServiceImpl extends RemoteServiceServlet implements YarbGuiS
   }
 
   public List<LogEntry> getRepositoryLog(String url) {
+    LOG.debug("start fetching log for {}", url);
     RepoConfiguration repoConfiguration = new RepoConfiguration(url, "", "");
     RevisionRange revisionRange = RevisionRange.ALL;
     List<LogEntry> repositoryLog = this.yarbService.getRepositoryLog(repoConfiguration, revisionRange);
-
+    LOG.debug("finished fetching log for {}", url);
     return repositoryLog;
   }
 

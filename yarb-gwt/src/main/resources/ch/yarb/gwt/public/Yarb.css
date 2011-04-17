@@ -1,5 +1,4 @@
 /** Add css rules here for your application. */
-
 button {
   display: block;
   font-size: 16pt
@@ -11,4 +10,47 @@ button {
 
 img {
   margin-top: 20px;
+}
+
+.main {
+  margin: 50px;
+  font-size: 12px;
+}
+
+.inputRepoUrl {
+  width: 400px;
+  float: left;
+}
+
+.buttonGo {
+  float: left;
+  margin-left: 20px;
+  font-size: 12px;
+}
+
+.tblLogEntries {
+  clear: left;
+  float: left;
+  margin-top: 20px;
+}
+
+.tblLogEntries th {
+  border-bottom: 1px solid #6F7277;
+  font-size: 12px;
+  text-shadow: none;
+  padding: 2px 15px;
+}
+
+.changedPaths {
+  float: left;
+  clear: none;
+}
+
+.logEntries {
+  float: left;
+}
+
+.container {
+  clear: left;
+  float: left;
 }

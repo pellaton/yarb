@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -20,8 +21,9 @@ import ch.yarb.api.to.LogEntry;
  */
 public class Yarb implements EntryPoint {
 
-
   private YarbGuiServiceAsync yarbGuiService;
+  private FlowPanel main;
+  private LogEntryPanel logEntries;
 
   /**
    * This is the entry point method.
@@ -29,25 +31,44 @@ public class Yarb implements EntryPoint {
   public void onModuleLoad() {
     this.yarbGuiService = GWT.create(YarbGuiService.class);
 
-    final Label label = new Label("welcome to yarb: ");
-    final TextBox box = new TextBox();
-    final Button button = new Button("go");
+    this.main = new FlowPanel();
+    this.main.setStyleName("main");
+    RootPanel.get().add(this.main);
 
-    RootPanel.get().add(label);
-    RootPanel.get().add(box);
-    RootPanel.get().add(button);
+    final Label label = new Label("welcome to yarb - enter the url, you want to browse: ");
+
+    FlowPanel input = new FlowPanel();
+    input.setStyleName("container");
+    final TextBox repoUrl = new TextBox();
+    repoUrl.setStyleName("inputRepoUrl");
+    final Button button = new Button("go");
+    button.setStyleName("buttonGo");
+    input.add(repoUrl);
+    input.add(button);
+
+    this.logEntries = new LogEntryPanel();
+
+    this.main.add(label);
+    this.main.add(input);
+    this.main.add(this.logEntries.buildLogPanel());
+
 
     button.addClickHandler(new ClickHandler() {
 
       @Override
       public void onClick(ClickEvent event) {
 
-        String url = box.getValue();
+        String url = repoUrl.getValue();
+
+        GWT.log("start loading log for url " + url);
 
         Yarb.this.yarbGuiService.getRepositoryLog(url, new RepoCallback());
 
       }
     });
+
+    // TODO MRO remove default value, just for testing..
+    repoUrl.setValue("http://eclipse-cheatsheet.googlecode.com/svn/trunk/");
 
   }
 
@@ -55,15 +76,12 @@ public class Yarb implements EntryPoint {
 
     @Override
     public void onFailure(Throwable caught) {
-      System.out.println("onFailure: " + caught);
+      RootPanel.get().add(new ErrorDialog("onFailure: " + caught));
     }
 
     @Override
     public void onSuccess(List<LogEntry> result) {
-      for (LogEntry curResult : result) {
-        RootPanel.get().add(
-            new Label(curResult.getRevision() + " - " + curResult.getChangedPathList()));
-      }
+      Yarb.this.logEntries.setLogEntryTableData(result);
     }
   }
 
