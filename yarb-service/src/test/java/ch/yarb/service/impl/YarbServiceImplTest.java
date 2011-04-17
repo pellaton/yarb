@@ -77,15 +77,15 @@ public class YarbServiceImplTest {
     assertTrue(repositoryLog.size() >= 8);
     LogEntry logEntry = repositoryLog.get(1);
     assertNotNull(logEntry);
-    assertEquals("commit revision", "1", logEntry.getRevision());
+    assertEquals("commit revision", "6", logEntry.getRevision());
     assertEquals("commit author", "michael", logEntry.getAuthor());
-    assertEquals("commit comment", "bump basic directory structure", logEntry.getComment());
+    assertEquals("commit comment", "added somefile", logEntry.getComment());
     assertNotNull("commit timestamp", logEntry.getTimestamp());
     List<ChangedPath> changedPathList = logEntry.getChangedPathList();
     assertNotNull(changedPathList);
     assertFalse(changedPathList.isEmpty());
-    assertEquals(3, changedPathList.size());
-    assertEquals("/branches", changedPathList.get(0).getPath());
+    assertEquals(1, changedPathList.size());
+    assertEquals("/trunk/module2/somefile", changedPathList.get(0).getPath());
     assertEquals(ChangeType.ADDED, changedPathList.get(0).getChangeType());
   }
 
@@ -161,12 +161,12 @@ public class YarbServiceImplTest {
     assertTrue(repositoryLog.size() >= 2);
     LogEntry logEntry = repositoryLog.get(1);
     assertNotNull(logEntry);
-    assertEquals("commit revision", "4", logEntry.getRevision());
+    assertEquals("commit revision", "2", logEntry.getRevision());
     assertEquals("commit author", "michael", logEntry.getAuthor());
-    assertEquals("commit comment", "corrected text", logEntry.getComment());
+    assertEquals("commit comment", "bump module 1", logEntry.getComment());
     assertNotNull("commit timestamp", logEntry.getTimestamp());
     for (ChangedPath changedPath :  logEntry.getChangedPathList()) {
-      assertTrue("changed path", changedPath.getPath().endsWith(path));
+      assertTrue("changed path", changedPath.getPath().contains("/trunk/module1"));
     }
   }
 
@@ -211,6 +211,23 @@ public class YarbServiceImplTest {
   }
 
   /**
+   * Tests the sorting order of {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)}.
+   */
+  @Test
+  public void getRepositoryLogSort() {
+    List<LogEntry> repositoryLog = this.service.getRepositoryLog(new RepoConfiguration(
+        "file://" + new File("./src/test/resources/svntestrepo").getAbsolutePath(),
+        "anonymous", "anonymous"),
+        new RevisionRange(Long.valueOf(4), Long.valueOf(2)));
+    assertNotNull(repositoryLog);
+    assertFalse(repositoryLog.isEmpty());
+    assertEquals(2, repositoryLog.size());
+    assertEquals(2, repositoryLog.size());
+    assertEquals("4", repositoryLog.get(0).getRevision());
+    assertEquals("3", repositoryLog.get(1).getRevision());
+  }
+
+  /**
    * Tests {@link YarbServiceImpl#getRepositoryLog(RepoConfiguration, RevisionRange)} for a specific version range
    * that is actually larger than the number of revisions in the repository.
    */
@@ -222,8 +239,7 @@ public class YarbServiceImplTest {
         new RevisionRange(null, Long.valueOf(1000)));
     assertNotNull(repositoryLog);
     assertFalse(repositoryLog.isEmpty());
-    assertEquals("0", repositoryLog.get(0).getRevision());
-    //assertEquals("0", repositoryLog.get(repositoryLog.size() - 1).getRevision());
+    assertEquals("0", repositoryLog.get(repositoryLog.size() - 1).getRevision());
   }
 
   /**

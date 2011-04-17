@@ -75,6 +75,7 @@ public class SvnKitRepositoryClientImpl implements RepositoryClient {
       e.printStackTrace();
     }
 
+    Collections.reverse(logEntryList);
     return logEntryList;
   }
 
