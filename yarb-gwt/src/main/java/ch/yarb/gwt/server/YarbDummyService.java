@@ -7,6 +7,7 @@ import java.util.List;
 import ch.yarb.api.service.YarbService;
 import ch.yarb.api.to.ChangedPath;
 import ch.yarb.api.to.LogEntry;
+import ch.yarb.api.to.LogFilter;
 import ch.yarb.api.to.RepoConfiguration;
 import ch.yarb.api.to.RevisionRange;
 
@@ -44,6 +45,23 @@ public class YarbDummyService implements YarbService {
   public List<String> getDiff(RepoConfiguration repoConfiguration,
       RevisionRange revisionRange,
       String path) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration,
+      RevisionRange revisionRange,
+      LogFilter filter) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<LogEntry> getRepositoryLog(RepoConfiguration repoConfiguration,
+      RevisionRange revisionRange,
+      LogFilter filter,
+      String... paths) {
     // TODO Auto-generated method stub
     return null;
   }
