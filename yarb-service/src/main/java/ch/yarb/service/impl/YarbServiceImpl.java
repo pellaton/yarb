@@ -127,13 +127,13 @@ public class YarbServiceImpl implements YarbService {
 
   /** {@inheritDoc} */
   @Override
-  public List<String> getDiff(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String path) {
+  public List<String> getDiff(RepoConfiguration repoConfiguration, Long revision, String path) {
 
     if (repoConfiguration == null) {
       throw new IllegalArgumentException("The argument 'repoConfiguration' must not be null");
     }
 
-    if (revisionRange == null) {
+    if (revision == null) {
       throw new IllegalArgumentException("The argument 'revisionRange' must not be null");
     }
 
@@ -141,7 +141,7 @@ public class YarbServiceImpl implements YarbService {
       throw new IllegalArgumentException("The argument 'path' must not be null");
     }
 
-    return this.repositoryClient.getDiff(repoConfiguration, revisionRange, path);
+    return this.repositoryClient.getDiff(repoConfiguration, revision, path);
   }
 
   /** {@inheritDoc} */

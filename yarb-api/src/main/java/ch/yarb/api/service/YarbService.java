@@ -72,11 +72,11 @@ public interface YarbService {
    * path. The diff is created between the lower and upper bound in the revision range.
    *
    * @param repoConfiguration the repository configuration
-   * @param revisionRange the revision range
+   * @param revision the revision to get the diff for (the diff is computed between revision-1 and revision)
    * @param path the path of the file within the repository
    * @return the diff
-   * @throws IllegalArgumentException if either {@code repoConfiguration}, {@code revisionRange} or {@code path} is
+   * @throws IllegalArgumentException if either {@code repoConfiguration}, {@code revision} or {@code path} is
    * {@code null}
    */
-  List<String> getDiff(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String path);
+  List<String> getDiff(RepoConfiguration repoConfiguration, Long revision, String path);
 }

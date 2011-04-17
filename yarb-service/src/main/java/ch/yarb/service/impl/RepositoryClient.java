@@ -28,11 +28,11 @@ public interface RepositoryClient {
    * path. The diff is created between the lower and upper bound in the revision range.
    *
    * @param repoConfiguration the repository configuration
-   * @param revisionRange the revision range
+   * @param revision the revision
    * @param path the path of the file within the repository
    * @return the diff
    */
-  List<String> getDiff(RepoConfiguration repoConfiguration, RevisionRange revisionRange, String path);
+  List<String> getDiff(RepoConfiguration repoConfiguration, Long revision, String path);
 
   /**
    * Gets the latest repo revision.
